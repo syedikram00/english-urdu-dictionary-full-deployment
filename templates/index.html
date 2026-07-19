@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>English-Urdu Dictionary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>English–Urdu Dictionary</h1>
+        <form id="search-form" class="search-form">
+            <input type="text" id="word-input" placeholder="Enter a word..." autocomplete="off" required>
+            <button type="submit">Search</button>
+        </form>
+        <div id="result" class="result-card" style="display:none;"></div>
+        <div id="error" class="error-msg" style="display:none;"></div>
+    </div>
+    <script>
+        const form = document.getElementById('search-form');
+        const input = document.getElementById('word-input');
+        const resultDiv = document.getElementById('result');
+        const errorDiv = document.getElementById('error');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const word = input.value.trim();
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            try {
+                const res = await fetch(`/lookup/${encodeURIComponent(word)}`);
+                if (!res.ok) {
+                    const err = await res.json();
+                    errorDiv.textContent = err.detail;
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                const data = await res.json();
+                resultDiv.innerHTML = `
+                    <h2>${data.word} <span class="pos">${data.part_of_speech}</span></h2>
+                    <p><strong>Definition:</strong> ${data.definition}</p>
+                    <p><strong>Example:</strong> <em>${data.example}</em></p>
+                    <p class="urdu"><strong>Urdu:</strong> ${data.urdu_meaning}</p>
+                `;
+                resultDiv.style.display = 'block';
+            } catch (err) {
+                errorDiv.textContent = 'Something went wrong.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
