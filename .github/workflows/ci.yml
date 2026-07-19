@@ -41,7 +41,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ikramsyed/eng-urdu-dictionary-full-deployment:v1.0
+          images: ikramsyed/eng-urdu-dictionary-full-deployment
           tags: |
             type=raw,value=latest
             type=sha
