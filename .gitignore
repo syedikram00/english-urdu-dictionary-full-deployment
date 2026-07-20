@@ -1,5 +1,20 @@
+# Python
 venv/
-__pycache__
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment
 .env
-.terraform
-.terraform.lock.hcl
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+terraform/crash.log
+terraform/*.tfvars
+
+# Helm
+dictionary-chart/charts/
+*.tgz
